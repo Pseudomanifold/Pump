@@ -31,6 +31,19 @@ ENABLE_IF_SUPPORTED( CMAKE_CXX_FLAGS "-pedantic" )
 
 INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 
+#
+# Executables
+#
+
+ADD_EXECUTABLE( pump
+  Pump.cc
+  Node.cc
+)
+
+#
+# Subdirectories
+#
+
 ADD_SUBDIRECTORY( examples )
 
 #
