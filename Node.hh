@@ -16,6 +16,9 @@ public:
   void        setName( const std::string& name );
   std::string    name() const noexcept;
 
+  void        setCommand( const std::string& command );
+  std::string    command() const noexcept;
+
   void addInput( const std::string& name );
   void addOutput( const std::string& name );
 
@@ -34,6 +37,7 @@ public:
 
 private:
   std::string _name = "undefined";
+  std::string _command;
 
   std::vector<std::string> _inputs;
   std::vector<std::string> _outputs;

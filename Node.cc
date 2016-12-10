@@ -24,6 +24,19 @@ std::string Node::name() const noexcept
   return _name;
 }
 
+void Node::setCommand( const std::string& command )
+{
+  _command = command;
+}
+
+std::string Node::command() const noexcept
+{
+  if( _command.empty() )
+    return _name;
+  else
+    return _command;
+}
+
 void Node::addInput( const std::string& name )
 {
   _inputs.push_back( name );

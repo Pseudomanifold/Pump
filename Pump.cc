@@ -1,5 +1,6 @@
 #include "Node.hh"
 #include "Pump.hh"
+#include "Processes.hh"
 
 #include <fstream>
 #include <iostream>
