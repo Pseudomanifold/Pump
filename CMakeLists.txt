@@ -36,8 +36,9 @@ INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 #
 
 ADD_EXECUTABLE( pump
-  Pump.cc
   Node.cc
+  Processes.cc
+  Pump.cc
 )
 
 #
