@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <iterator>
+#include <numeric>
 #include <string>
 #include <vector>
 
