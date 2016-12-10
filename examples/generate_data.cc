@@ -5,23 +5,25 @@
 
 #include <cmath>
 
-void description( const std::string& name )
+std::string name   = "generate_data";
+std::string output = "generate_data.out";
+
+void description()
 {
   std::cout << "---\n"
-            << "name: "        << name                << "\n"
-            << "description: " << ""                  << "\n"
-            << "output: "      << "generate_data.out" << "\n";
+            << "name: "        << name   << "\n"
+            << "description: " << ""     << "\n"
+            << "output: "      << output << "\n";
 }
 
 int main( int argc, char** argv )
 {
   if( argc == 2 )
   {
-    std::string name     = argv[0];
     std::string argument = argv[1];
     if( argument == "--description" )
     {
-      description( name );
+      description();
       return 0;
     }
   }
@@ -29,7 +31,7 @@ int main( int argc, char** argv )
   std::default_random_engine generator;
   std::uniform_real_distribution<double> distribution( 0.0, 2*M_PI );
 
-  std::ofstream out( "generate_data.out" );
+  std::ofstream out( output );
 
   for( int i = 0; i < 100; i++ )
     out << distribution( generator ) << "\n";

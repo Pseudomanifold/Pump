@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-std::string name;
+std::string name   = "analyse_data";
 std::string input  = "analyse_data.in";
 std::string output = "analyse_data.out";
 
@@ -24,7 +24,6 @@ int main( int argc, char** argv )
 {
   if( argc == 2 )
   {
-    name                 = argv[0];
     std::string argument = argv[1];
 
     if( argument == "--description" )

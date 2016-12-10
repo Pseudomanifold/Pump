@@ -26,9 +26,19 @@ void Pump::load( const std::string& filename )
     if( line.empty() || line.front() == '#' )
       continue;
 
-    if( std::regex_match( line, reNode ) )
-      std::cerr << "* Line contains node: " << line << "\n";
-    else if( std::regex_match( line, reEdge ) )
+    std::smatch matches;
+
+    if( std::regex_match( line, matches, reNode ) )
+    {
+      std::string name        = matches[1];
+      std::string description = get_stdout( name + " --description" );
+
+      std::cerr << "* Line contains node: " << name << "\n"
+                << "* Description length: " << description.size() << "\n";
+
+      auto node = Node::fromDescription( description );
+    }
+    else if( std::regex_match( line, matches, reEdge ) )
       std::cerr << "* Line contains edge: " << line << "\n";
     else
       std::cerr << "* Unknown line: " << line << "\n";
