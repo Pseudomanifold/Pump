@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "Edge.hh"
 #include "Node.hh"
 
 namespace pump
@@ -17,9 +18,12 @@ public:
 
 private:
   void add( Node&& node );
+  void add( Edge&& edge );
+
   Node get( const std::string& name );
 
   std::vector<Node> _nodes;
+  std::vector<Edge> _edges; // TODO: This needs to become a DAG
 };
 
 } // namespace pump

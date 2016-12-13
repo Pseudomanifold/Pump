@@ -15,18 +15,6 @@ namespace pump
 namespace detail
 {
 
-struct Edge
-{
-  std::string source;
-  std::string target;
-
-  bool isSourceInput;
-  bool isTargetInput;
-
-  unsigned sourcePortIndex;
-  unsigned targetPortIndex;
-};
-
 Edge makeEdge( const std::string& sourceDescription, const std::string& targetDescription )
 {
   std::regex reDescription( "([^\\.]+)\\.(out|in)\\.([[:digit:]]+)" );
@@ -91,7 +79,8 @@ void Pump::load( const std::string& filename )
                 << "* Source:             " << source << "\n"
                 << "* Target:             " << target << "\n";
 
-      detail::makeEdge( source, target );
+      this->add(
+        detail::makeEdge( source, target ) );
     }
     else
       std::cerr << "* Unknown line: " << line << "\n";
@@ -106,6 +95,11 @@ void Pump::save( const std::string& filename )
 void Pump::add( Node&& node )
 {
   _nodes.emplace_back( node );
+}
+
+void Pump::add( Edge&& edge )
+{
+  _edges.emplace_back( edge );
 }
 
 Node Pump::get( const std::string& name )
