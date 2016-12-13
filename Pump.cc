@@ -2,6 +2,7 @@
 #include "Pump.hh"
 #include "Processes.hh"
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <regex>
@@ -37,7 +38,8 @@ void Pump::load( const std::string& filename )
       std::cerr << "* Line contains node: " << name << "\n"
                 << "* Description length: " << description.size() << "\n";
 
-      auto node = Node::fromDescription( description );
+      this->add(
+        Node::fromDescription( description ) );
     }
     else if( std::regex_match( line, matches, reEdge ) )
       std::cerr << "* Line contains edge: " << line << "\n";
@@ -49,6 +51,25 @@ void Pump::load( const std::string& filename )
 void Pump::save( const std::string& filename )
 {
   throw std::runtime_error( "Not yet implemented" );
+}
+
+void Pump::add( Node&& node )
+{
+  _nodes.emplace_back( node );
+}
+
+Node Pump::get( const std::string& name )
+{
+  auto it = std::find_if( _nodes.begin(), _nodes.end(),
+                          [&name] ( const Node& node )
+                          {
+                            return node.name() == name;
+                          } );
+
+  if( it != _nodes.end() )
+    return *it;
+  else
+    return Node();
 }
 
 } // namespace pump
