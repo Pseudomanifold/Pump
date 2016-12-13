@@ -57,6 +57,21 @@ bool Node::isSink() const noexcept
   return _outputs.empty();
 }
 
+bool Node::operator<( const Node& other ) const noexcept
+{
+  return this->name() < other.name() && this->command() < other.command();
+}
+
+bool Node::operator==( const Node& other ) const noexcept
+{
+  return this->name() == other.name() && this->command() == other.command();
+}
+
+bool Node::operator!=( const Node& other ) const noexcept
+{
+  return !this->operator==( other );
+}
+
 Node Node::fromDescription( const std::string& description )
 {
   std::istringstream stream( description );

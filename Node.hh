@@ -28,6 +28,19 @@ public:
   bool isSource() const noexcept;
   bool isSink()   const noexcept;
 
+  // Comparison predicates ---------------------------------------------
+
+  /** Compares nodes by names and commands  */
+  bool operator<( const Node& other ) const noexcept;
+
+  /** Compares nodes for equality in name and command */
+  bool operator==( const Node& other ) const noexcept;
+
+  /** @overload operator==( const Node& other ) */
+  bool operator!=( const Node& other ) const noexcept;
+
+  // -------------------------------------------------------------------
+
   /**
     Builds a node from its textual description. If successful, a new
     node along with its ports will be returned.
