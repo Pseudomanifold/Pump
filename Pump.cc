@@ -12,6 +12,47 @@
 namespace pump
 {
 
+namespace detail
+{
+
+struct Edge
+{
+  std::string source;
+  std::string target;
+
+  bool isSourceInput;
+  bool isTargetInput;
+
+  unsigned sourcePortIndex;
+  unsigned targetPortIndex;
+};
+
+Edge makeEdge( const std::string& sourceDescription, const std::string& targetDescription )
+{
+  std::regex reDescription( "([^\\.]+)\\.(out|in)\\.([[:digit:]]+)" );
+  std::smatch matches;
+
+  Edge edge;
+
+  if( std::regex_match( sourceDescription, matches, reDescription ) )
+  {
+    edge.source          = matches[1];
+    edge.isSourceInput   = matches[2] == "in";
+    edge.sourcePortIndex = static_cast<unsigned>( std::stoul( matches[3] ) );
+  }
+
+  if( std::regex_match( targetDescription, matches, reDescription ) )
+  {
+    edge.target          = matches[1];
+    edge.isTargetInput   = matches[2] == "in";
+    edge.targetPortIndex = static_cast<unsigned>( std::stoul( matches[3] ) );
+  }
+
+  return edge;
+}
+
+}
+
 void Pump::load( const std::string& filename )
 {
   std::ifstream in( filename );
@@ -42,7 +83,16 @@ void Pump::load( const std::string& filename )
         Node::fromDescription( description ) );
     }
     else if( std::regex_match( line, matches, reEdge ) )
-      std::cerr << "* Line contains edge: " << line << "\n";
+    {
+      std::string source = matches[1];
+      std::string target = matches[2];
+
+      std::cerr << "* Line contains edge: " << line   << "\n"
+                << "* Source:             " << source << "\n"
+                << "* Target:             " << target << "\n";
+
+      detail::makeEdge( source, target );
+    }
     else
       std::cerr << "* Unknown line: " << line << "\n";
   }
