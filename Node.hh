@@ -13,6 +13,8 @@ public:
   Node() = default;
   Node( const std::string& name );
 
+  // Attributes --------------------------------------------------------
+
   void        setName( const std::string& name );
   std::string    name() const noexcept;
 
@@ -41,12 +43,17 @@ public:
 
   // -------------------------------------------------------------------
 
+  void execute();
+
+  // -------------------------------------------------------------------
+
   /**
     Builds a node from its textual description. If successful, a new
     node along with its ports will be returned.
   */
 
-  static Node fromDescription( const std::string& description );
+  static Node fromDescription( const std::string& description,
+                               const std::string& command );
 
 private:
   std::string _name = "undefined";

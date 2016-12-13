@@ -1,4 +1,5 @@
 #include "Node.hh"
+#include "Processes.hh"
 
 #include <istream>
 #include <regex>
@@ -72,7 +73,12 @@ bool Node::operator!=( const Node& other ) const noexcept
   return !this->operator==( other );
 }
 
-Node Node::fromDescription( const std::string& description )
+void Node::execute()
+{
+  get_stdout( this->command() );
+}
+
+Node Node::fromDescription( const std::string& description, const std::string& command )
 {
   std::istringstream stream( description );
 
@@ -84,6 +90,7 @@ Node Node::fromDescription( const std::string& description )
   std::string keyOutput = "output";
 
   Node node;
+  node.setCommand( command );
 
   while( std::getline( stream, line ) )
   {

@@ -16,6 +16,9 @@ public:
   void load( const std::string& filename );
   void save( const std::string& filename );
 
+  /** Attempts to process all edges in the plan once */
+  void run();
+
 private:
   void add( Node&& node );
   void add( Edge&& edge );

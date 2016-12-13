@@ -61,14 +61,14 @@ void Pump::load( const std::string& filename )
 
     if( std::regex_match( line, matches, reNode ) )
     {
-      std::string name        = matches[1];
-      std::string description = get_stdout( name + " --description" );
+      std::string command     = matches[1];
+      std::string description = get_stdout( command + " --description" );
 
-      std::cerr << "* Line contains node: " << name << "\n"
+      std::cerr << "* Line contains node: " << command << "\n"
                 << "* Description length: " << description.size() << "\n";
 
       this->add(
-        Node::fromDescription( description ) );
+        Node::fromDescription( description, command ) );
     }
     else if( std::regex_match( line, matches, reEdge ) )
     {
@@ -90,6 +90,18 @@ void Pump::load( const std::string& filename )
 void Pump::save( const std::string& filename )
 {
   throw std::runtime_error( "Not yet implemented" );
+}
+
+void Pump::run()
+{
+  for( auto&& node : _nodes )
+  {
+    if( node.isSource() )
+    {
+      std::cerr << "* Executing node '" << node.name() << "'...\n";
+      node.execute();
+    }
+  }
 }
 
 void Pump::add( Node&& node )
@@ -123,4 +135,5 @@ int main( int argc, char** argv )
   // Sounds like the beginning of a motivational video...
   pump::Pump pump;
   pump.load( "../examples/simple.workflow" );
+  pump.run();
 }
