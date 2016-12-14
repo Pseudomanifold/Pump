@@ -35,6 +35,10 @@ INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 # Executables
 #
 
+ADD_EXECUTABLE( harness
+  Harness.cc
+)
+
 ADD_EXECUTABLE( pump
   Filesystem.cc
   Node.cc
