@@ -8,6 +8,7 @@
 #include <iostream>
 #include <regex>
 #include <map>
+#include <queue>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -111,6 +112,7 @@ void Pump::run()
   }
 
   std::map<Node, unsigned> readyInputs;
+  std::queue<Node> nodeQueue;
 
   // TODO: Need proper traversal order. This is of course incorrect for
   // most of the networks that could be employed...
@@ -128,12 +130,24 @@ void Pump::run()
       readyInputs[target] = readyInputs[target] + 1;
 
       if( readyInputs[target] == target.inputs() )
+      {
         std::cerr << "* Node '" << target.name() << "' is ready for execution\n";
+
+        readyInputs[target] = 0;
+        nodeQueue.push( target );
+      }
     }
   }
 
-  // TODO: Check whether all inputs of a node have been satisfied. If
-  // so, the node may be executed.
+  while( !nodeQueue.empty() )
+  {
+    auto node = nodeQueue.front();
+    nodeQueue.pop();
+
+    std::cerr << "* Executing queued node '" << node.name() << "'...\n";
+
+    node.execute();
+  }
 }
 
 void Pump::add( Node&& node )
