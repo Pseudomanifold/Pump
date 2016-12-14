@@ -24,6 +24,9 @@ public:
   void addInput( const std::string& name );
   void addOutput( const std::string& name );
 
+  std::string input( unsigned index ) const noexcept;
+  std::string output( unsigned index ) const noexcept;
+
   std::size_t numInputs()  const noexcept;
   std::size_t numOutputs() const noexcept;
 

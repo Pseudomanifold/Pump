@@ -1,3 +1,4 @@
+#include "Filesystem.hh"
 #include "Node.hh"
 #include "Pump.hh"
 #include "Processes.hh"
@@ -117,7 +118,8 @@ void Pump::run()
     {
       std::cerr << "* Source '" << source.name() << "' has finished; processing edge...\n";
 
-      // TODO: Process edge...
+      this->processEdge( edge.source, edge.sourcePortIndex,
+                         edge.target, edge.targetPortIndex );
     }
   }
 
@@ -147,6 +149,21 @@ Node Pump::get( const std::string& name )
     return *it;
   else
     return Node();
+}
+
+void Pump::processEdge( const std::string& source, unsigned int sourcePort,
+                        const std::string& target, unsigned int targetPort )
+{
+  // TODO: Do I really want to map ports starting from 1, or should
+  // I rather use the default zero-based indices?
+
+  auto&& sourceNode = this->get( source );
+  auto&& targetNode = this->get( target );
+
+  auto&& sourceFile = sourceNode.output(  sourcePort - 1 );
+  auto&& targetFile = targetNode.input(   targetPort - 1 );
+
+  mv( sourceFile, targetFile );
 }
 
 } // namespace pump

@@ -25,6 +25,9 @@ private:
 
   Node get( const std::string& name );
 
+  void processEdge( const std::string& source, unsigned int sourcePort,
+                    const std::string& target, unsigned int targetPort );
+
   std::vector<Node> _nodes;
   std::vector<Edge> _edges; // TODO: This needs to become a DAG
 };

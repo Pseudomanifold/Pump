@@ -48,6 +48,22 @@ void Node::addOutput( const std::string& name )
   _outputs.push_back( name );
 }
 
+std::string Node::input( unsigned index ) const noexcept
+{
+  if( index < _inputs.size() )
+    return _inputs[index];
+  else
+    return {};
+}
+
+std::string Node::output( unsigned index ) const noexcept
+{
+  if( index < _outputs.size() )
+    return _outputs[index];
+  else
+    return {};
+}
+
 bool Node::isSource() const noexcept
 {
   return _inputs.empty();
