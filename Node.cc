@@ -48,6 +48,11 @@ void Node::addOutput( const std::string& name )
   _outputs.push_back( name );
 }
 
+std::size_t Node::numInputs() const noexcept
+{
+  return _inputs.size();
+}
+
 std::string Node::input( unsigned index ) const noexcept
 {
   if( index < _inputs.size() )

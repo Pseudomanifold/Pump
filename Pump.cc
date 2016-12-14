@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <regex>
+#include <map>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -109,6 +110,8 @@ void Pump::run()
     }
   }
 
+  std::map<Node, unsigned> readyInputs;
+
   // TODO: Need proper traversal order. This is of course incorrect for
   // most of the networks that could be employed...
   for( auto&& edge : _edges )
@@ -120,6 +123,12 @@ void Pump::run()
 
       this->processEdge( edge.source, edge.sourcePortIndex,
                          edge.target, edge.targetPortIndex );
+
+      auto&& target       = this->get( edge.target );
+      readyInputs[target] = readyInputs[target] + 1;
+
+      if( readyInputs[target] == target.numInputs() )
+        std::cerr << "* Node '" << target.name() << "' is ready for execution\n";
     }
   }
 
