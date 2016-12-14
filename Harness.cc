@@ -46,6 +46,17 @@ int main( int argc, char** argv )
 
   if( descriptionRequired )
   {
+    std::cout << "name: " << command << "\n"
+              << "command: " << arguments.front() << " -i" << inputs << " -c" << command << "\n";
+
+    // FIXME: Better extraction of command name?
+    for( unsigned i = 0; i < inputs; i++ )
+      std::cout << "input: " << command << "_" << i << ".in\n";
+
+    std::cout << "output: " << command << ".out\n";
     return 0;
   }
+
+  // TODO: Execute auxiliary command, with the individual files being
+  // assigned as additional parameters.
 }
