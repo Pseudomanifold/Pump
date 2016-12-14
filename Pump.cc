@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <regex>
+#include <set>
 #include <stdexcept>
 #include <string>
 
@@ -94,14 +95,34 @@ void Pump::save( const std::string& filename )
 
 void Pump::run()
 {
+  std::set<Node> finishedNodes;
+
   for( auto&& node : _nodes )
   {
     if( node.isSource() )
     {
       std::cerr << "* Executing node '" << node.name() << "'...\n";
       node.execute();
+
+      finishedNodes.insert( node );
     }
   }
+
+  // TODO: Need proper traversal order. This is of course incorrect for
+  // most of the networks that could be employed...
+  for( auto&& edge : _edges )
+  {
+    auto&& source = this->get( edge.source );
+    if( finishedNodes.find( source ) != finishedNodes.end() )
+    {
+      std::cerr << "* Source '" << source.name() << "' has finished; processing edge...\n";
+
+      // TODO: Process edge...
+    }
+  }
+
+  // TODO: Check whether all inputs of a node have been satisfied. If
+  // so, the node may be executed.
 }
 
 void Pump::add( Node&& node )
