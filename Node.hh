@@ -25,10 +25,10 @@ public:
   void addOutput( const std::string& name );
 
   std::string input( unsigned index ) const noexcept;
-  std::string output( unsigned index ) const noexcept;
+  std::size_t inputs()                const noexcept;
 
-  std::size_t numInputs()  const noexcept;
-  std::size_t numOutputs() const noexcept;
+  std::string output( unsigned index ) const noexcept;
+  std::size_t outputs()                const noexcept;
 
   bool isSource() const noexcept;
   bool isSink()   const noexcept;

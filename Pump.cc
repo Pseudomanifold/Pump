@@ -127,7 +127,7 @@ void Pump::run()
       auto&& target       = this->get( edge.target );
       readyInputs[target] = readyInputs[target] + 1;
 
-      if( readyInputs[target] == target.numInputs() )
+      if( readyInputs[target] == target.inputs() )
         std::cerr << "* Node '" << target.name() << "' is ready for execution\n";
     }
   }
