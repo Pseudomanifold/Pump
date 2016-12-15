@@ -89,6 +89,59 @@ void Pump::load( const std::string& filename )
     else
       std::cerr << "* Unknown line: " << line << "\n";
   }
+
+  // This ensures that edges with the same source are being ordered
+  // according to their port indices. The proper traversal ordering
+  // is only determined afterwards.
+  std::sort( _edges.begin(), _edges.end() );
+
+  // Sort edges --------------------------------------------------------
+
+  std::map<Node, std::vector<Edge> > outgoingEdgeMap;
+  std::map<Node, unsigned>           readyInputs;
+
+  for( auto&& edge : _edges )
+    outgoingEdgeMap[ this->get( edge.source) ].push_back( edge );
+
+  std::vector<Edge> sortedEdges;
+  sortedEdges.reserve( _edges.size() );
+
+  std::queue<Node> nodes;
+
+  auto processNode = [this,
+                      &nodes,
+                      &outgoingEdgeMap,
+                      &readyInputs,
+                      &sortedEdges] ( const Node& node )
+  {
+    auto&& outgoingEdges = outgoingEdgeMap[node];
+
+    sortedEdges.insert( sortedEdges.end(),
+        outgoingEdges.begin(), outgoingEdges.end() );
+
+    for( auto&& edge : outgoingEdges )
+    {
+      auto&& target         = this->get( edge.target );
+      readyInputs[ target ] = readyInputs[ target ] + 1;
+
+      if( readyInputs[ target ] == target.inputs() )
+        nodes.push( target );
+    }
+  };
+
+  for( auto&& node : _nodes )
+    if( node.isSource() )
+      processNode( node );
+
+  while( !nodes.empty() )
+  {
+    auto node = nodes.front();
+    nodes.pop();
+
+    processNode( node );
+  }
+
+  _edges.swap( sortedEdges );
 }
 
 void Pump::save( const std::string& filename )
