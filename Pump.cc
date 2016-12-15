@@ -151,16 +151,12 @@ void Pump::save( const std::string& filename )
 
 void Pump::run()
 {
-  std::set<Node> finishedNodes;
-
   for( auto&& node : _nodes )
   {
     if( node.isSource() )
     {
       std::cerr << "* Executing node '" << node.name() << "'...\n";
       node.execute();
-
-      finishedNodes.insert( node );
     }
   }
 
@@ -172,34 +168,24 @@ void Pump::run()
   for( auto&& edge : _edges )
   {
     auto&& source = this->get( edge.source );
-    if( finishedNodes.find( source ) != finishedNodes.end() )
+    std::cerr << "* Node '" << source.name() << "' has finished; processing edge...\n";
+
+    this->processEdge( edge.source, edge.sourcePortIndex,
+                       edge.target, edge.targetPortIndex );
+
+    auto&& target       = this->get( edge.target );
+    readyInputs[target] = readyInputs[target] + 1;
+
+    if( readyInputs[target] == target.inputs() )
     {
-      std::cerr << "* Source '" << source.name() << "' has finished; processing edge...\n";
+      std::cerr << "* Node '" << target.name() << "' is ready for execution\n";
+      std::cerr << "* Executing node '" << target.name() << "'...\n";
 
-      this->processEdge( edge.source, edge.sourcePortIndex,
-                         edge.target, edge.targetPortIndex );
+      readyInputs[target] = 0;
+      nodeQueue.push( target );
 
-      auto&& target       = this->get( edge.target );
-      readyInputs[target] = readyInputs[target] + 1;
-
-      if( readyInputs[target] == target.inputs() )
-      {
-        std::cerr << "* Node '" << target.name() << "' is ready for execution\n";
-
-        readyInputs[target] = 0;
-        nodeQueue.push( target );
-      }
+      target.execute();
     }
-  }
-
-  while( !nodeQueue.empty() )
-  {
-    auto node = nodeQueue.front();
-    nodeQueue.pop();
-
-    std::cerr << "* Executing queued node '" << node.name() << "'...\n";
-
-    node.execute();
   }
 }
 
