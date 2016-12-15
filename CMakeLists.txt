@@ -40,6 +40,7 @@ ADD_EXECUTABLE( harness
 )
 
 ADD_EXECUTABLE( pump
+  Edge.cc
   Filesystem.cc
   Node.cc
   Processes.cc
