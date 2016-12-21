@@ -74,7 +74,7 @@ void Pump::load( const std::string& filename )
                 << "* Description length: " << description.size() << "\n";
 
       this->add(
-        Node::fromDescription( description, command ) );
+        Node::fromDescription( description, id, command ) );
     }
     else if( std::regex_match( line, matches, reEdge ) )
     {

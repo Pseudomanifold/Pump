@@ -15,6 +15,16 @@ Node::Node( const std::string& name )
 {
 }
 
+void Node::setID( const std::string& id )
+{
+  _id = id;
+}
+
+std::string Node::id() const noexcept
+{
+  return _id;
+}
+
 void Node::setName( const std::string& name )
 {
   _name = name;
@@ -104,7 +114,9 @@ void Node::execute()
   get_stdout( this->command() );
 }
 
-Node Node::fromDescription( const std::string& description, const std::string& command )
+Node Node::fromDescription( const std::string& description,
+                            const std::string& id,
+                            const std::string& command )
 {
   std::istringstream stream( description );
 
@@ -116,6 +128,7 @@ Node Node::fromDescription( const std::string& description, const std::string& c
   std::string keyOutput = "output";
 
   Node node;
+  node.setID( id );
   node.setCommand( command );
 
   while( std::getline( stream, line ) )

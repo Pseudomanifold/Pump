@@ -15,6 +15,9 @@ public:
 
   // Attributes --------------------------------------------------------
 
+  void        setID( const std::string& id );
+  std::string    id() const noexcept;
+
   void        setName( const std::string& name );
   std::string    name() const noexcept;
 
@@ -56,9 +59,11 @@ public:
   */
 
   static Node fromDescription( const std::string& description,
+                               const std::string& id,
                                const std::string& command );
 
 private:
+  std::string _id   = "undefined";
   std::string _name = "undefined";
   std::string _command;
 
