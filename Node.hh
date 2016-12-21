@@ -10,8 +10,15 @@ namespace pump
 class Node
 {
 public:
+
+  // Constructors ------------------------------------------------------
+
+  /**
+    Creates an invalid node with an unspecified command. Using this node
+    does not have any negative consequences on a workflow, however.
+  */
+
   Node() = default;
-  Node( const std::string& name );
 
   // Attributes --------------------------------------------------------
 

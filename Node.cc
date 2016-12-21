@@ -10,11 +10,6 @@
 namespace pump
 {
 
-Node::Node( const std::string& name )
-  : _name( name )
-{
-}
-
 void Node::setID( const std::string& id )
 {
   _id = id;
