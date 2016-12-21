@@ -1,6 +1,8 @@
 A: examples/generate_data
 B: examples/pass_data
-C: examples/analyse_data
+C: examples/pass_data
+D: examples/analyse_data
 
-pass_data.out.1 -> analyse_data.in.1
-generate_data.out.1 -> pass_data.in.1
+C.out.1 -> D.in.1
+B.out.1 -> C.in.1
+A.out.1 -> B.in.1
