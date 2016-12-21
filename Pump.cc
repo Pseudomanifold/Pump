@@ -21,7 +21,7 @@ namespace detail
 
 Edge makeEdge( const std::string& sourceDescription, const std::string& targetDescription )
 {
-  std::regex reDescription( "([^\\.]+)\\.(out|in)\\.([[:digit:]]+)" );
+  std::regex reDescription( "([^\\.]+)\\.([[:digit:]]+)" );
   std::smatch matches;
 
   Edge edge;
@@ -29,15 +29,13 @@ Edge makeEdge( const std::string& sourceDescription, const std::string& targetDe
   if( std::regex_match( sourceDescription, matches, reDescription ) )
   {
     edge.source          = matches[1];
-    edge.isSourceInput   = matches[2] == "in";
-    edge.sourcePortIndex = static_cast<unsigned>( std::stoul( matches[3] ) );
+    edge.sourcePortIndex = static_cast<unsigned>( std::stoul( matches[2] ) );
   }
 
   if( std::regex_match( targetDescription, matches, reDescription ) )
   {
     edge.target          = matches[1];
-    edge.isTargetInput   = matches[2] == "in";
-    edge.targetPortIndex = static_cast<unsigned>( std::stoul( matches[3] ) );
+    edge.targetPortIndex = static_cast<unsigned>( std::stoul( matches[2] ) );
   }
 
   return edge;
@@ -201,12 +199,12 @@ void Pump::add( Edge&& edge )
   _edges.emplace_back( edge );
 }
 
-Node Pump::get( const std::string& name )
+Node Pump::get( const std::string& id )
 {
   auto it = std::find_if( _nodes.begin(), _nodes.end(),
-                          [&name] ( const Node& node )
+                          [&id] ( const Node& node )
                           {
-                            return node.name() == name;
+                            return node.id() == id;
                           } );
 
   if( it != _nodes.end() )

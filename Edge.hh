@@ -11,9 +11,6 @@ struct Edge
   std::string source;
   std::string target;
 
-  bool isSourceInput;
-  bool isTargetInput;
-
   unsigned sourcePortIndex;
   unsigned targetPortIndex;
 
