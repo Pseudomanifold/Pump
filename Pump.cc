@@ -51,7 +51,7 @@ void Pump::load( const std::string& filename )
   if( !in )
     throw std::runtime_error( "Unable to read input file" );
 
-  std::regex reNode( "[[:space:]]*node:[[:space:]]+([^[:space:]]+)" );
+  std::regex reNode( "[[:space:]]*([[:alnum:]]+):[[:space:]]+([^[:space:]]+)" );
   std::regex reEdge( "[[:space:]]*([^[:space:]]+)[[:space:]]*->[[:space:]]*([^[:space:]]+)" );
 
   std::string line;
@@ -65,10 +65,12 @@ void Pump::load( const std::string& filename )
 
     if( std::regex_match( line, matches, reNode ) )
     {
-      std::string command     = matches[1];
+      std::string id          = matches[1];
+      std::string command     = matches[2];
       std::string description = get_stdout( command + " --description" );
 
       std::cerr << "* Line contains node: " << command << "\n"
+                << "* ID:                 " << id << "\n"
                 << "* Description length: " << description.size() << "\n";
 
       this->add(
