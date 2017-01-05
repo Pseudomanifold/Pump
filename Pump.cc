@@ -49,7 +49,7 @@ void Pump::load( const std::string& filename )
   if( !in )
     throw std::runtime_error( "Unable to read input file" );
 
-  std::regex reNode( "[[:space:]]*([[:alnum:]]+):[[:space:]]+([^[:space:]]+)" );
+  std::regex reNode( "[[:space:]]*([[:alnum:]]+):[[:space:]]+(.+)[[:space:]]*$" );
   std::regex reEdge( "[[:space:]]*([^[:space:]]+)[[:space:]]*->[[:space:]]*([^[:space:]]+)" );
 
   std::string line;
