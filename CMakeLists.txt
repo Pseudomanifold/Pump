@@ -37,6 +37,7 @@ INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
 
 ADD_EXECUTABLE( harness
   Harness.cc
+  Processes.cc
 )
 
 ADD_EXECUTABLE( pump

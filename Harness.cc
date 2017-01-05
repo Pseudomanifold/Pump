@@ -1,7 +1,11 @@
+#include <fstream>
 #include <iostream>
 #include <regex>
+#include <sstream>
 #include <string>
 #include <vector>
+
+#include "Processes.hh"
 
 int main( int argc, char** argv )
 {
@@ -44,19 +48,56 @@ int main( int argc, char** argv )
       descriptionRequired = true;
   }
 
+  // Stores the names of the input files that are fed to the harness
+  // auxiliary program.
+  std::vector<std::string> inputFiles;
+
+  for( unsigned i = 0; i < inputs; i++ )
+  {
+    std::ostringstream stream;
+
+    stream << command // FIXME: Better extraction of command name?
+           << "_"
+           << i
+           << ".in";
+
+    inputFiles.push_back( stream.str() );
+  }
+
+  std::vector<std::string> outputFiles;
+  outputFiles.push_back( command + ".out" );
+
+  // Print description and exit ----------------------------------------
+
   if( descriptionRequired )
   {
     std::cout << "name: " << command << "\n"
               << "command: " << arguments.front() << " -i" << inputs << " -c" << command << "\n";
 
-    // FIXME: Better extraction of command name?
     for( unsigned i = 0; i < inputs; i++ )
-      std::cout << "input: " << command << "_" << i << ".in\n";
+      std::cout << "input: " << inputFiles.at(i) << "\n";
 
-    std::cout << "output: " << command << ".out\n";
+    std::cout << "output: " << outputFiles.front() << "\n";
     return 0;
   }
 
-  // TODO: Execute auxiliary command, with the individual files being
-  // assigned as additional parameters.
+  // Command execution -------------------------------------------------
+
+  std::string completeCommand  = command;
+  for( unsigned i = 0; i < inputs; i++ )
+  {
+    completeCommand += " ";
+    completeCommand += inputFiles.at(i);
+  }
+
+  // TODO: Make the number of outputs configurable
+  // TODO: Permit storing STDERR
+  completeCommand += " > " + outputFiles.front();
+
+  auto output = pump::get_stdout( completeCommand );
+
+  // Storing output ----------------------------------------------------
+
+  std::ofstream out( outputFiles.front() );
+  out << output;
 }
