@@ -94,10 +94,6 @@ int main( int argc, char** argv )
   // TODO: Permit storing STDERR
   completeCommand += " > " + outputFiles.front();
 
-  auto output = pump::get_stdout( completeCommand );
-
-  // Storing output ----------------------------------------------------
-
-  std::ofstream out( outputFiles.front() );
-  out << output;
+  // TODO: Can I use the output for anything else?
+  pump::get_stdout( completeCommand );
 }
