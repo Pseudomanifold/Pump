@@ -37,8 +37,20 @@ private:
   void processEdge( const std::string& source, unsigned int sourcePort,
                     const std::string& target, unsigned int targetPort );
 
+  /**
+    Finds all outgoing edges of a node (if any), identified by its node
+    ID. The purpose of this function is to obtain all dependencies of a
+    node in the workflow. We require these dependencies in order to get
+    all output files distributed to be input files for subsequent nodes
+    in the workflow.
+  */
+
+  std::vector<Edge> getOutgoingEdges( const std::string& id ) const noexcept;
+
+  // Attributes --------------------------------------------------------
+
   std::vector<Node> _nodes;
-  std::vector<Edge> _edges; // TODO: This needs to become a DAG
+  std::vector<Edge> _edges;
 };
 
 } // namespace pump

@@ -212,7 +212,26 @@ std::string Pump::toMakefile() const noexcept
   {
     stream << node.toMakefileRule();
 
+    auto&& source = node;
+    auto&& edges  = this->getOutgoingEdges( node.id() );
+
+    for( auto&& e : edges )
+    {
+      auto&& target = this->get( e.target );
+      auto&& output = source.output( e.sourcePortIndex - 1 );
+      auto&& input  = target.input(  e.targetPortIndex - 1 );
+
+      // TODO: Make behaviour configurable. It might be more useful to
+      // move or copy outputs in order to keep the output directory
+      // clean.
+      //
+      // As an advantage, the linking preserves the structure of the
+      // workflow and permits changes at different points of it.
+      stream << "\t" << "ln " << output << " " << input << "\n";
+    }
+
     stream << "\n";
+
   }
 
   return stream.str();
