@@ -208,6 +208,17 @@ std::string Pump::toMakefile() const noexcept
 {
   std::ostringstream stream;
 
+  // Create "all" target for dependency resolution ---------------------
+
+  stream << "all:";
+
+  for( auto&& node : _nodes )
+    stream << " " << node.name();
+
+  stream << "\n\n";
+
+  // Create individual node targets ------------------------------------
+
   for( auto&& node : _nodes )
   {
     stream << node.toMakefileRule();
@@ -276,6 +287,19 @@ void Pump::processEdge( const std::string& source, unsigned int sourcePort,
   // TODO: Would copying work as well?
   // TODO: Would linking work as well?
   mv( sourceFile, targetFile );
+}
+
+std::vector<Edge> Pump::getOutgoingEdges( const std::string& id ) const noexcept
+{
+  std::vector<Edge> edges;
+
+  std::copy_if( _edges.begin(), _edges.end(), std::back_inserter( edges ),
+                [&id] ( const Edge& e )
+                {
+                  return e.source == id;
+                } );
+
+  return edges;
 }
 
 } // namespace pump
