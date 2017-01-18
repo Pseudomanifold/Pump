@@ -228,7 +228,7 @@ void Pump::add( Edge&& edge )
   _edges.emplace_back( edge );
 }
 
-Node Pump::get( const std::string& id )
+Node Pump::get( const std::string& id ) const noexcept
 {
   auto it = std::find_if( _nodes.begin(), _nodes.end(),
                           [&id] ( const Node& node )

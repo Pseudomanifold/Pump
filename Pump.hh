@@ -32,7 +32,7 @@ private:
   void add( Node&& node );
   void add( Edge&& edge );
 
-  Node get( const std::string& id );
+  Node get( const std::string& id ) const noexcept;
 
   void processEdge( const std::string& source, unsigned int sourcePort,
                     const std::string& target, unsigned int targetPort );
