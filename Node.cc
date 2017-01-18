@@ -91,12 +91,17 @@ bool Node::isSink() const noexcept
 
 bool Node::operator<( const Node& other ) const noexcept
 {
-  return this->name() < other.name() && this->command() < other.command();
+  // TODO: Can this atrocity be fixed?
+  return ( this->id() < other.id() )
+      || ( this->id() == other.id() && this->name() < other.name() )
+      || ( this->id() == other.id() && this->name() == other.name() && this->command() < other.command()  );
 }
 
 bool Node::operator==( const Node& other ) const noexcept
 {
-  return this->name() == other.name() && this->command() == other.command();
+  return this->id()      == other.id()
+      && this->name()    == other.name()
+      && this->command() == other.command();
 }
 
 bool Node::operator!=( const Node& other ) const noexcept
