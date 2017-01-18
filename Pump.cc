@@ -10,6 +10,7 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 
@@ -189,6 +190,16 @@ void Pump::run()
   }
 }
 
+std::string Pump::toMakefile() const noexcept
+{
+  std::ostringstream stream;
+
+  for( auto&& node : _nodes )
+    stream << node.toMakefileRule();
+
+  return stream.str();
+}
+
 void Pump::add( Node&& node )
 {
   _nodes.emplace_back( node );
@@ -225,7 +236,8 @@ void Pump::processEdge( const std::string& source, unsigned int sourcePort,
   auto&& sourceFile = sourceNode.output(  sourcePort - 1 );
   auto&& targetFile = targetNode.input(   targetPort - 1 );
 
-  // TODO: Copying data would also work...
+  // TODO: Would copying work as well?
+  // TODO: Would linking work as well?
   mv( sourceFile, targetFile );
 }
 
@@ -237,4 +249,6 @@ int main( int argc, char** argv )
   pump::Pump pump;
   pump.load( "../examples/simple.workflow" );
   pump.run();
+
+  std::cout << pump.toMakefile() << "\n";
 }

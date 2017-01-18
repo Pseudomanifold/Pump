@@ -19,6 +19,15 @@ public:
   /** Attempts to process all edges in the plan once */
   void run();
 
+  /**
+    Converts the loaded plan to a Makefile. The Makefile will encode all
+    dependencies of the workflow automatically. Moreover, the \c Pump is
+    going to ensure that output files of nodes are being copied to their
+    respective targets.
+  */
+
+  std::string toMakefile() const noexcept;
+
 private:
   void add( Node&& node );
   void add( Edge&& edge );
