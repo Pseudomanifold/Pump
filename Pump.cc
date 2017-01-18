@@ -104,6 +104,15 @@ void Pump::load( const std::string& filename )
   for( auto&& edge : _edges )
     outgoingEdgeMap[ this->get( edge.source) ].push_back( edge );
 
+  // Contains nodes in the order in which they can be executed in the
+  // workflow. This is akin to a topological ordering of the nodes in
+  // the network.
+  std::vector<Node> sortedNodes;
+  sortedNodes.reserve( _nodes.size() );
+
+  // Contains edge in the order in which they can be executed in the
+  // workflow. It could be possible that multiple edges are ready to
+  // be processed at the same time, but this is not (yet) handled.
   std::vector<Edge> sortedEdges;
   sortedEdges.reserve( _edges.size() );
 
@@ -139,9 +148,11 @@ void Pump::load( const std::string& filename )
     auto node = nodes.front();
     nodes.pop();
 
+    sortedNodes.push_back( node );
     processNode( node );
   }
 
+  _nodes.swap( sortedNodes );
   _edges.swap( sortedEdges );
 }
 
@@ -164,8 +175,6 @@ void Pump::run()
   std::map<Node, unsigned> readyInputs;
   std::queue<Node> nodeQueue;
 
-  // TODO: Need proper traversal order. This is of course incorrect for
-  // most of the networks that could be employed...
   for( auto&& edge : _edges )
   {
     auto&& source = this->get( edge.source );
@@ -195,7 +204,11 @@ std::string Pump::toMakefile() const noexcept
   std::ostringstream stream;
 
   for( auto&& node : _nodes )
+  {
     stream << node.toMakefileRule();
+
+    stream << "\n";
+  }
 
   return stream.str();
 }
