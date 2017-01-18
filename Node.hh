@@ -34,10 +34,10 @@ public:
   void addInput( const std::string& name );
   void addOutput( const std::string& name );
 
-  std::string input( unsigned index ) const noexcept;
+  std::string input( std::size_t index ) const noexcept;
   std::size_t inputs()                const noexcept;
 
-  std::string output( unsigned index ) const noexcept;
+  std::string output( std::size_t index ) const noexcept;
   std::size_t outputs()                const noexcept;
 
   bool isSource() const noexcept;
@@ -68,6 +68,15 @@ public:
   static Node fromDescription( const std::string& description,
                                const std::string& id,
                                const std::string& command );
+
+  /**
+    Converts a node into a Makefile rule and returns it. The rule consists of
+    the name of the node and includes all its input files. Note that the rule
+    is not sufficient to handle dependent nodes. This requires full knowledge
+    of the workflow, which is only available in the \c Pump class.
+  */
+
+  std::string toMakefileRule() const noexcept;
 
 private:
   std::string _id   = "undefined";

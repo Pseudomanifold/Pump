@@ -53,7 +53,7 @@ void Node::addOutput( const std::string& name )
   _outputs.push_back( name );
 }
 
-std::string Node::input( unsigned index ) const noexcept
+std::string Node::input( std::size_t index ) const noexcept
 {
   if( index < _inputs.size() )
     return _inputs[index];
@@ -66,7 +66,7 @@ std::size_t Node::inputs() const noexcept
   return _inputs.size();
 }
 
-std::string Node::output( unsigned index ) const noexcept
+std::string Node::output( std::size_t index ) const noexcept
 {
   if( index < _outputs.size() )
     return _outputs[index];
@@ -147,6 +147,20 @@ Node Node::fromDescription( const std::string& description,
   }
 
   return node;
+}
+
+std::string Node::toMakefileRule() const noexcept
+{
+  std::ostringstream stream;
+  stream << this->name() << ":";
+
+  for( std::size_t i = 0; i < this->inputs(); i++ )
+    stream << " " << this->input(i);
+
+  stream << "\n"
+         << "\t" << this->command() << "\n";
+
+  return stream.str();
 }
 
 } // namespace pump
