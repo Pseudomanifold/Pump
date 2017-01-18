@@ -140,8 +140,13 @@ void Pump::load( const std::string& filename )
   };
 
   for( auto&& node : _nodes )
+  {
     if( node.isSource() )
+    {
       processNode( node );
+      sortedNodes.push_back( node );
+    }
+  }
 
   while( !nodes.empty() )
   {
