@@ -225,6 +225,7 @@ void Pump::processEdge( const std::string& source, unsigned int sourcePort,
   auto&& sourceFile = sourceNode.output(  sourcePort - 1 );
   auto&& targetFile = targetNode.input(   targetPort - 1 );
 
+  // TODO: Copying data would also work...
   mv( sourceFile, targetFile );
 }
 
