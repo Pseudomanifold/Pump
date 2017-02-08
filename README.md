@@ -39,7 +39,9 @@ examples.
 
 # Usage
 
-Please consult the wiki for usage information.
+Please consult [the wiki](https://github.com/Submanifold/Pump/wiki) for
+usage information. You are welcome to extend the documentation, request
+features, and so on&hellip;
 
 # License
 
