@@ -306,10 +306,24 @@ std::vector<Edge> Pump::getOutgoingEdges( const std::string& id ) const noexcept
 
 int main( int argc, char** argv )
 {
+  if( argc <= 1 )
+  {
+    std::cerr << "Nothing to pump. Exiting...\n";
+    // TODO: Show usage
+    return -1;
+  }
+
+  std::string input = argc <= 2 ? argv[1] : argv[2];
+  std::string flag  = argc <= 2 ? ""      : argv[1];
+
   // Sounds like the beginning of a motivational video...
   pump::Pump pump;
-  pump.load( "../examples/simple.workflow" );
+  pump.load( input );
   pump.run();
 
-  std::cout << pump.toMakefile() << "\n";
+  if( flag == "-m" )
+  {
+    std::cerr << "Storing output in Makefile format...\n";
+    std::cout << pump.toMakefile() << "\n";
+  }
 }
