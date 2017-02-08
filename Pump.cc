@@ -238,7 +238,7 @@ std::string Pump::toMakefile() const noexcept
       //
       // As an advantage, the linking preserves the structure of the
       // workflow and permits changes at different points of it.
-      stream << "\t" << "ln " << output << " " << input << "\n";
+      stream << "\t" << "ln -sf " << output << " " << input << "\n";
     }
 
     stream << "\n";
