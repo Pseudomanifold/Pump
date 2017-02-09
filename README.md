@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Submanifold/Pump.svg?branch=master)](https://travis-ci.org/Submanifold/Pump)
+
 # Pump &mdash; A generic data flow program
 
 `Pump` is a generic data flow program, meant to accommodate those who
